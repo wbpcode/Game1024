@@ -1,0 +1,29 @@
+﻿<Window x:Name="sweeperWindow" x:Class="MineSweeper.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MineSweeper"
+        mc:Ignorable="d"
+        Title="MineSweeper" Height="520" Width="328" ResizeMode="CanMinimize" Icon="Sweeper.ico">
+    <Grid Width="320" Height="490" Margin="1,0,1,-9" VerticalAlignment="Top" HorizontalAlignment="Center">
+        <Menu x:Name="menu" Height="20" VerticalAlignment="Top" Width="300" HorizontalContentAlignment="Center" Margin="10,0" HorizontalAlignment="Center">
+            <MenuItem x:Name="gameSubmitItem" Width="40" Height="20" Header="提交" HorizontalContentAlignment="Center" Click="gameSubmitItem_Click"/>
+            <MenuItem x:Name="gameRestartItem" Header="重来" Height="20" Width="40" Click="gameRestartItem_Click" HorizontalContentAlignment="Center"/>
+            <MenuItem x:Name="gameLevelItem" Header="难度" Height="20" Width="40" HorizontalContentAlignment="Center">
+                <MenuItem x:Name="lowLevel" Header="简单*" Click="lowLevel_Click"/>
+                <MenuItem x:Name="mediumLevel" Header="中等" Click="mediumLevel_Click"/>
+                <MenuItem x:Name="highLevel" Header="困难" Click="highLevel_Click"/>
+            </MenuItem>
+            <MenuItem x:Name="gameHelpItem" Header="帮助" Height="20" Width="40" HorizontalContentAlignment="Center" Click="gameHelpItem_Click"/>
+        </Menu>
+        <Grid x:Name="mineGrid" HorizontalAlignment="Center" Height="400" VerticalAlignment="Top" Width="300" Margin="10,25,10,0"/>
+        <Button x:Name="mineNumButton" Content="雷数" HorizontalAlignment="Left" VerticalAlignment="Top" Width="60" Margin="8,429,0,0" Height="24"/>
+        <TextBox x:Name="mineNumTextBox" Text="0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="30" Height="24" Margin="85,429,0,0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+        <TextBox x:Name="flagNumTextBox" Text="0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="30" Height="24" Margin="115,429,0,0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+        <Button x:Name="mineTimeButton" Content="时间" HorizontalAlignment="Left" Margin="170,429,0,0" VerticalAlignment="Top" Width="60" Height="24"/>
+        <TextBox x:Name="mineTimeContentButton" Text="0" HorizontalAlignment="Left" Margin="247,429,0,0" VerticalAlignment="Top" Width="60" Height="24" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+        <TextBox x:Name="endTextBox" HorizontalAlignment="Center" Height="22" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Bottom" Width="300" Margin="7,0,13,10" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+
+    </Grid>
+</Window>
