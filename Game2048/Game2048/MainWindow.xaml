@@ -1,12 +1,34 @@
-﻿<Window x:Class="Game2048.MainWindow"
+﻿<Window x:Name="Window2048" x:Class="Game2048.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Game2048"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
-    <Grid>
-        
+        Title="2048" Height="310" Width="240" ResizeMode="CanMinimize">
+    <Grid Background="AliceBlue" Height="272" Width="232" VerticalAlignment="Bottom" HorizontalAlignment="Center">
+        <Grid Name="numberZone" Height="212" Width="212" Background="LightBlue" VerticalAlignment="Bottom" Margin="10">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+        </Grid>
+        <Grid Height="36" Width="60" Margin="12,7,160,229" Background="Aqua">
+            <TextBlock x:Name="gameName" Text="2048" FontSize="20" HorizontalAlignment="center" VerticalAlignment="Center"/>
+        </Grid>
+        <Grid Height="36" Width="60" Margin="86,7,86,230" Background="Yellow">
+            <TextBlock Margin="0,0,0,18" Text="得分" HorizontalAlignment="Center" VerticalAlignment="Center" Background="Yellow"/>
+            <TextBlock x:Name="scoreText" Margin="0,18,0,0" Text="0" Background="Yellow" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        </Grid>
+        <Button x:Name="gameRestart" Height="18" Width="60" Margin="160,7,12,248" BorderBrush="{x:Null}" BorderThickness="0" Background="LightBlue" Content="重来"/>
+        <Button x:Name="gameSet" Height="18" Width="60" Margin="160,25,12,230" BorderBrush="{x:Null}" BorderThickness="0" Background="LightCoral" Content="设置"/>
     </Grid>
 </Window>
