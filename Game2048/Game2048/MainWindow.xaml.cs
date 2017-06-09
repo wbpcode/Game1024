@@ -84,16 +84,21 @@ namespace Game2048
         }
         private void NewRandomBlock()
         {
-            while (true) {
-                int random = ran.Next(0, 15);
-                if (numberArray[random / 4, random % 4].num == 0)
+            List<int> blankList = new List<int>();
+            blankList.Clear();
+            for(int i = 0; i < 4; i++)
+            {
+                for(int j = 0; j < 4; j++)
                 {
-                    numberArray[random / 4, random % 4].num = 2;
-                    numberArray[random / 4, random % 4].button.Content = 2;
-                    break;
+                    if (numberArray[i, j].num == 0)
+                    {
+                        blankList.Add(i * 4 + j);
+                    }
                 }
             }
-
+            int random = ran.Next(0, blankList.Count);
+            numberArray[blankList[random] / 4, blankList[random] % 4].num = 2;
+            numberArray[blankList[random] / 4, blankList[random] % 4].button.Content = 2;
         }
         private int CheckIfGameEnd()
         {
