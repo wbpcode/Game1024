@@ -27,13 +27,18 @@ namespace Game2048
         public MainWindow()
         {
             InitializeComponent();
-            NumberArrayInit();
-            NumberZoneInit();
+            GameInit();
             NewRandomBlock();
             NewRandomBlock();
             numberZone.KeyDown += NumberZone_KeyDown;
+            gameRestart.Click += GameRestart_Click;
+
         }
 
+        private void GameRestart_Click(object sender, RoutedEventArgs e)
+        {
+            GameRestart();
+        }
         private void NumberZone_KeyDown(object sender, KeyEventArgs e)
         {
             Key inputKey = e.Key;
@@ -51,26 +56,17 @@ namespace Game2048
                 case Key.D:
                     RightEvent();
                     break;
-            }          
-        }
-
-        private void NumberArrayInit()
-        {
-            for(int i = 0; i < 4; i++)
-            {
-                for(int j = 0; j < 4; j++)
-                {
-                    numberArray[i, j].num = 0;
-                    numberArray[i, j].button = null;
-                }
             }
         }
-        private void NumberZoneInit()
+
+        private void GameInit()
         {
-            for(int i = 0; i < 4; i++)
+            for (int i = 0; i < 4; i++)
             {
-                for(int j = 0; j < 4; j++)
+                for (int j = 0; j < 4; j++)
                 {
+                    numberArray[i, j].num = 0;
+
                     Button newButton = new Button();
                     newButton.BorderBrush = null;
                     newButton.Background = Brushes.LightCyan;
@@ -82,13 +78,29 @@ namespace Game2048
                 }
             }
         }
+        private void GameRestart()
+        {
+            for (int i = 0; i < 4; i++)
+            {
+                for (int j = 0; j < 4; j++)
+                {
+                    numberArray[i, j].num = 0;
+                    ViewUpdate(numberArray[i, j]);
+                }
+            }
+            NewRandomBlock();
+            NewRandomBlock();
+
+            ScoreUpdate();
+        }
+
         private void NewRandomBlock()
         {
             List<int> blankList = new List<int>();
             blankList.Clear();
-            for(int i = 0; i < 4; i++)
+            for (int i = 0; i < 4; i++)
             {
-                for(int j = 0; j < 4; j++)
+                for (int j = 0; j < 4; j++)
                 {
                     if (numberArray[i, j].num == 0)
                     {
@@ -100,29 +112,42 @@ namespace Game2048
             numberArray[blankList[random] / 4, blankList[random] % 4].num = 2;
             numberArray[blankList[random] / 4, blankList[random] % 4].button.Content = 2;
         }
-        private int CheckIfGameEnd()
+
+        private int GameEndCheck()
         {
             return 0;
         }
-        private void GameEndMess()
+        private void GameEndTip()
         {
 
         }
+
         private void ScoreUpdate()
         {
             int num = 0;
-            for(int i = 0; i < 4; i++)
+            for (int i = 0; i < 4; i++)
             {
                 for (int j = 0; j < 4; j++)
                 {
                     if (numberArray[i, j].num != 0)
                     {
-                        num += numberArray[i, j].num * (int)(Math.Log(numberArray[i, j].num, 2));
+                        num += numberArray[i, j].num * (int)(Math.Log(numberArray[i, j].num / 2, 2));
                     }
                 }
             }
             myScore = num;
             scoreText.Text = num.ToString();
+        }
+        private void ViewUpdate(NumberBlock block)
+        {
+            if (block.num != 0)
+            {
+                block.button.Content = block.num;
+            }
+            else
+            {
+                block.button.Content = "";
+            }
         }
 
         private void UpEvent()
@@ -130,7 +155,7 @@ namespace Game2048
             int flag = 0;
             for (int i = 0; i < 4; i++)
             {
-                for(int j = 0; j < 4; j++)
+                for (int j = 0; j < 4; j++)
                 {
                     for (int m = j; m > 0; m--)
                     {
@@ -138,27 +163,14 @@ namespace Game2048
                         {
                             continue;
                         }
-                        if (numberArray[m, i].num == numberArray[m - 1, i].num || numberArray[m-1,i].num==0)
+                        if (numberArray[m, i].num == numberArray[m - 1, i].num || numberArray[m - 1, i].num == 0)
                         {
                             numberArray[m - 1, i].num += numberArray[m, i].num;
                             numberArray[m, i].num = 0;
 
-                            if (numberArray[m - 1, i].num != 0)
-                            {
-                                numberArray[m - 1, i].button.Content = numberArray[m - 1, i].num;
-                            }
-                            else
-                            {
-                                numberArray[m - 1, i].button.Content = "";
-                            }
-                            if (numberArray[m, i].num != 0)
-                            {
-                                numberArray[m, i].button.Content = numberArray[m, i].num;
-                            }
-                            else
-                            {
-                                numberArray[m, i].button.Content = "";
-                            }
+                            ViewUpdate(numberArray[m - 1, i]);
+                            ViewUpdate(numberArray[m, i]);
+
                             flag = 1;
                         }
                     }
@@ -170,36 +182,24 @@ namespace Game2048
         private void LeftEvent()
         {
             int flag = 0;
-            for(int i = 0; i < 4; i++)
+            for (int i = 0; i < 4; i++)
             {
-                for(int j = 0; j < 4; j++)
+                for (int j = 0; j < 4; j++)
                 {
-                    for(int m = j; m > 0; m--)
+                    for (int m = j; m > 0; m--)
                     {
-                        if(numberArray[i, m].num == numberArray[i, m - 1].num && numberArray[i, m].num == 0)
+                        if (numberArray[i, m].num == numberArray[i, m - 1].num && numberArray[i, m].num == 0)
                         {
                             continue;
                         }
-                        if(numberArray[i,m].num==numberArray[i,m-1].num || numberArray[i, m - 1].num == 0)
+                        if (numberArray[i, m].num == numberArray[i, m - 1].num || numberArray[i, m - 1].num == 0)
                         {
                             numberArray[i, m - 1].num += numberArray[i, m].num;
                             numberArray[i, m].num = 0;
-                            if (numberArray[i, m-1].num != 0)
-                            {
-                                numberArray[i, m-1].button.Content = numberArray[i, m-1].num;
-                            }
-                            else
-                            {
-                                numberArray[i, m-1].button.Content = "";
-                            }
-                            if (numberArray[i, m].num != 0)
-                            {
-                                numberArray[i, m].button.Content = numberArray[i, m].num;
-                            }
-                            else
-                            {
-                                numberArray[i, m].button.Content = "";
-                            }
+
+                            ViewUpdate(numberArray[i, m - 1]);
+                            ViewUpdate(numberArray[i, m]);
+
                             flag = 1;
                         }
                     }
@@ -211,36 +211,24 @@ namespace Game2048
         private void RightEvent()
         {
             int flag = 0;
-            for (int i = 0; i < 4; i++) 
+            for (int i = 0; i < 4; i++)
             {
-                for(int j = 3; j >= 0; j--)
+                for (int j = 3; j >= 0; j--)
                 {
-                    for(int m = j; m < 3; m++)
+                    for (int m = j; m < 3; m++)
                     {
                         if (numberArray[i, m].num == numberArray[i, m + 1].num && numberArray[i, m + 1].num == 0)
                         {
                             continue;
                         }
-                        if (numberArray[i,m].num==numberArray[i,m+1].num || numberArray[i, m + 1].num == 0)
+                        if (numberArray[i, m].num == numberArray[i, m + 1].num || numberArray[i, m + 1].num == 0)
                         {
                             numberArray[i, m + 1].num += numberArray[i, m].num;
                             numberArray[i, m].num = 0;
-                            if (numberArray[i, m+1].num != 0)
-                            {
-                                numberArray[i, m+1].button.Content = numberArray[i, m+1].num;
-                            }
-                            else
-                            {
-                                numberArray[i, m+1].button.Content = "";
-                            }
-                            if (numberArray[i, m].num != 0)
-                            {
-                                numberArray[i, m].button.Content = numberArray[i, m].num;
-                            }
-                            else
-                            {
-                                numberArray[i, m].button.Content = "";
-                            }
+
+                            ViewUpdate(numberArray[i, m + 1]);
+                            ViewUpdate(numberArray[i, m]);
+
                             flag = 1;
                         }
                     }
@@ -254,9 +242,9 @@ namespace Game2048
             int flag = 0;
             for (int i = 0; i < 4; i++)
             {
-                for (int j = 3; j >=0; j--)
+                for (int j = 3; j >= 0; j--)
                 {
-                    for (int m = j; m <3; m++)
+                    for (int m = j; m < 3; m++)
                     {
                         if (numberArray[m, i].num == numberArray[m + 1, i].num && numberArray[m + 1, i].num == 0)
                         {
@@ -266,22 +254,10 @@ namespace Game2048
                         {
                             numberArray[m + 1, i].num += numberArray[m, i].num;
                             numberArray[m, i].num = 0;
-                            if (numberArray[m + 1, i].num != 0)
-                            {
-                                numberArray[m + 1, i].button.Content = numberArray[m + 1, i].num;
-                            }
-                            else
-                            {
-                                numberArray[m + 1, i].button.Content = "";
-                            }
-                            if (numberArray[m, i].num != 0)
-                            {
-                                numberArray[m, i].button.Content = numberArray[m, i].num;
-                            }
-                            else
-                            {
-                                numberArray[m, i].button.Content = "";
-                            }
+
+                            ViewUpdate(numberArray[m + 1, i]);
+                            ViewUpdate(numberArray[m, i]);
+
                             flag = 1;
                         }
                     }
@@ -291,13 +267,22 @@ namespace Game2048
             if (flag == 1) { NewRandomBlock(); }
         }
 
+
+
         private struct NumberBlock
         {
             public int num;
             public Button button;
         }
     }
-    
+
+    public class SubWindow : Window
+    {
+        public SubWindow()
+        {
+
+        }
+    }
 
 
 }
