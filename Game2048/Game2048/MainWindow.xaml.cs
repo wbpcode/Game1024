@@ -22,7 +22,7 @@ namespace Game2048
     {
         NumberBlock[,] numberArray = new NumberBlock[4, 4];
         Random ran = new Random();
-        int myScore = 0;
+        public int myScore = 0;
 
         public MainWindow()
         {
@@ -32,7 +32,13 @@ namespace Game2048
             NewRandomBlock();
             numberZone.KeyDown += NumberZone_KeyDown;
             gameRestart.Click += GameRestart_Click;
+            gameEnd.Click += GameEnd_Click;
 
+        }
+
+        private void GameEnd_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
         }
 
         private void GameRestart_Click(object sender, RoutedEventArgs e)
@@ -78,7 +84,7 @@ namespace Game2048
                 }
             }
         }
-        private void GameRestart()
+        public void GameRestart()
         {
             for (int i = 0; i < 4; i++)
             {
@@ -113,13 +119,55 @@ namespace Game2048
             numberArray[blankList[random] / 4, blankList[random] % 4].button.Content = 2;
         }
 
-        private int GameEndCheck()
+        private void GameEndCheck()
         {
-            return 0;
+            int flag = 0;
+            for(int i = 0; i < 4; i++)
+            {
+                for(int j = 0; j < 4; j++)
+                {
+                    if (numberArray[i, j].num == 0)
+                    {
+                        flag = 1;
+                        break;
+                    }
+                }
+                if (flag == 1) { break; }
+            }
+            for(int i = 0; i < 4; i++)
+            {
+                for(int j = 0; j < 3; j++)
+                {
+                    if (numberArray[i, j].num == numberArray[i, j + 1].num)
+                    {
+                        flag = 1;
+                        break;
+                    }
+                }
+                if (flag == 1) { break; }
+            }
+            for(int i = 0; i < 4; i++)
+            {
+                for(int j = 0; j < 3; j++)
+                {
+                    if (numberArray[j, i].num == numberArray[j + 1, i].num)
+                    {
+                        flag = 1;
+                        break;
+                    }
+                }
+                if (flag == 1) { break; }
+
+            }
+            if (flag == 0) { GameEndTip(); }
+
         }
         private void GameEndTip()
         {
-
+            SubWindow gameEndTip = new SubWindow(this);
+            gameEndTip.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+            gameEndTip.Owner = this;
+            gameEndTip.ShowDialog();
         }
 
         private void ScoreUpdate()
@@ -136,7 +184,7 @@ namespace Game2048
                 }
             }
             myScore = num;
-            scoreText.Text = num.ToString();
+            scoreTextBlock.Text = num.ToString();
         }
         private void ViewUpdate(NumberBlock block)
         {
@@ -178,6 +226,7 @@ namespace Game2048
             }
             ScoreUpdate();
             if (flag == 1) { NewRandomBlock(); }
+            GameEndCheck();
         }
         private void LeftEvent()
         {
@@ -207,6 +256,7 @@ namespace Game2048
             }
             ScoreUpdate();
             if (flag == 1) { NewRandomBlock(); }
+            GameEndCheck();
         }
         private void RightEvent()
         {
@@ -236,6 +286,7 @@ namespace Game2048
             }
             ScoreUpdate();
             if (flag == 1) { NewRandomBlock(); }
+            GameEndCheck();
         }
         private void DownEvent()
         {
@@ -265,6 +316,7 @@ namespace Game2048
             }
             ScoreUpdate();
             if (flag == 1) { NewRandomBlock(); }
+            GameEndCheck();
         }
 
 
@@ -275,14 +327,5 @@ namespace Game2048
             public Button button;
         }
     }
-
-    public class SubWindow : Window
-    {
-        public SubWindow()
-        {
-
-        }
-    }
-
 
 }
