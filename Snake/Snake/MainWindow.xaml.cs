@@ -29,7 +29,6 @@ namespace SnakeGame
         public MainWindow()
         {
             InitializeComponent();
-
             foodPoint = new Random();
             snake = new Snake(mapCanvas);
             snakeFood = new SnakeSection(foodPoint.Next(10,(int)mapCanvas.Width-10),foodPoint.Next(10,(int)mapCanvas.Height-10));
@@ -62,9 +61,16 @@ namespace SnakeGame
         private void Timer_Tick(object sender, EventArgs e)
         {
             snake.SnakeUpdate();
-            if (GetFood())
+            if (snake.CheckDead(mapCanvas))
             {
-                snake.GetFood(snakeFood);
+                timer.Stop();
+                GameEndWindow subWindow = new GameEndWindow();
+                subWindow.Owner = this;
+                subWindow.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+                subWindow.ShowDialog();
+            }
+            if (snake.GetFood(snakeFood))
+            {
                 snakeFood = new SnakeSection(foodPoint.Next(10, (int)mapCanvas.Width - 10), foodPoint.Next(10, (int)mapCanvas.Height - 10));
                 ViewUpdate(snakeFood);
             }
@@ -75,14 +81,6 @@ namespace SnakeGame
                 mapCanvas.Children.Remove(ss.shape);
                 ViewUpdate(ss);
             }
-        }
-
-        private bool GetFood()
-        {
-            if (Math.Sqrt(Math.Pow((snake.header.point.X - snakeFood.point.X), 2) + Math.Pow((snake.header.point.Y - snakeFood.point.Y), 2))<=10){
-                return true;
-            }
-            else { return false; }
         }
 
         private void ViewUpdate(SnakeSection ss)
@@ -96,9 +94,8 @@ namespace SnakeGame
     {
         public SnakeSection header = new SnakeSection();
         public Point orientation = new Point();
-        public List<SnakeSection> body=new List<SnakeSection>();
-        public Point lastpoint=new Point();
-        public Canvas map;
+        public List<SnakeSection> body = new List<SnakeSection>();
+        public Point lastpoint = new Point();
         int stepNum = 0;
 
         public int length { get { return body.Count; } }
@@ -113,11 +110,10 @@ namespace SnakeGame
             orientation.Y = 0;
 
             body.Add(header);
-            lastpoint.X= body[body.Count - 1].point.X;
+            lastpoint.X = body[body.Count - 1].point.X;
             lastpoint.Y = body[body.Count - 1].point.Y;
-            map = c;
         }
-        public Snake(Canvas c,int s)
+        public Snake(Canvas c, int s)
         {
             header.point.X = c.Width / 2;
             header.point.Y = c.Height / 2;
@@ -128,7 +124,6 @@ namespace SnakeGame
             header.shape.Fill = Brushes.Blue;
             lastpoint.X = body[body.Count - 1].point.X;
             lastpoint.Y = body[body.Count - 1].point.Y;
-            map = c;
         }
 
         public void SnakeUpdate()
@@ -139,8 +134,8 @@ namespace SnakeGame
 
             stepNum++;
 
-            temp.point.X = header.point.X+orientation.X;
-            temp.point.Y = header.point.Y+orientation.Y;
+            temp.point.X = header.point.X + orientation.X;
+            temp.point.Y = header.point.Y + orientation.Y;
 
             body.RemoveAt(body.Count - 1);
 
@@ -155,11 +150,33 @@ namespace SnakeGame
 
         }
 
-        public void GetFood(SnakeSection f)
+        public bool GetFood(SnakeSection f)
         {
-            body.Add(f);
-            f.point.X = lastpoint.X;
-            f.point.Y = lastpoint.Y;
+            if (Math.Sqrt(Math.Pow((header.point.X - f.point.X), 2) + Math.Pow((header.point.Y - f.point.Y), 2)) <= 10)
+            {
+                body.Add(f);
+                f.point.X = lastpoint.X;
+                f.point.Y = lastpoint.Y;
+                return true;
+            }
+            return false;
+        }
+
+        public bool CheckDead(Canvas map)
+        {
+            if (header.point.X < 0 || header.point.X > map.Width||
+                header.point.Y < 0 || header.point.Y > map.Height)
+            {
+                return true;
+            }
+
+            for(int i = 1; i < body.Count; i++)
+            {
+                if (Math.Sqrt(Math.Pow((header.point.X - body[i].point.X), 2) + Math.Pow((header.point.Y - body[i].point.Y), 2)) <= 10) { return true; }
+            }
+
+            return false;
+
         }
 
     }
