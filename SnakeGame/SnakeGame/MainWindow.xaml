@@ -5,16 +5,18 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SnakeGame"
         mc:Ignorable="d"
-        Title="MainWindow" Height="500" Width="600" ResizeMode="CanMinimize" Background="AliceBlue">
+        Title="Snake" Height="500" Width="600" ResizeMode="CanMinimize" Background="AliceBlue">
     <Grid Width="580" Height="470" Background="AliceBlue" HorizontalAlignment="Center" VerticalAlignment="Bottom">
         <Canvas x:Name="mapCanvas" Height="420" Width="580" HorizontalAlignment="Center" VerticalAlignment="Bottom" Background="LightBlue"
                 Margin="0,0,0,10"/>
         <Menu Height="24" Width="580" Background="AliceBlue" VerticalAlignment="Top" Margin="0,11,0,0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
-            <MenuItem Height="24" Width="40" x:Name="restartMenuItem" Header="重来" 
+            <MenuItem Height="24" Width="40" x:Name="replayMenuItem" Header="重来" 
                       VerticalAlignment="Center" HorizontalAlignment="Center" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"
                       />
             <MenuItem Height="24" Width="40" x:Name="pauseMenuItem" Header="暂停" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Center"/>
-
+            <MenuItem Height="24" Width="40" x:Name="endMenuItem" Header="结束" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Center"/>
         </Menu>
+        
+        
     </Grid>
 </Window>

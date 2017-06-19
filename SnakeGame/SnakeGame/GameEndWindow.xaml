@@ -5,10 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SnakeGame"
         mc:Ignorable="d"
-        Title="GameEndWindow" Height="300" Width="300"
+         Title="GameEndWindow" Height="300" Width="300"
         BorderBrush="{x:Null}" ResizeMode="NoResize"
         WindowStyle="None" BorderThickness="0" ShowInTaskbar="False">
     <Grid>
-        
+        <TextBlock x:Name="scoreTextBlock" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24"/>
+        <Button x:Name="replayButton" FontSize="18" Content="重来" Width="80" Height="30" Margin="35,197,185,73" BorderThickness="0"/>
+        <Button x:Name="endButton" FontSize="18" Content="结束" Width="80" Height="30" Margin="185,197,35,73" BorderThickness="0"/>
     </Grid>
 </Window>
